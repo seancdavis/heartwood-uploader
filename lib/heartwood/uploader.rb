@@ -6,7 +6,7 @@ require 'heartwood/uploader/engine'
 require 'heartwood/uploader/railtie'
 require 'heartwood/uploader/configuration'
 
-# require 'heartwood/uploader/base'
+require 'heartwood/uploader/form'
 require 'heartwood/uploader/helper'
 
 module Heartwood
