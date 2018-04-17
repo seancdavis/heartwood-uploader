@@ -18,10 +18,10 @@ module Heartwood
                     :aws_bucket,
                     :aws_secret_access_key,
                     :expiration, # Time after upload to clean up incomplete multipart uploads
+                    :form_id, # HTML #id selector for form element (default: 'fileupload')
                     :max_file_size, # Maximum allowed file size (default: 50MB)
                     :multipart, # Allow multiple file uploads (default: false)
-                    :prefix, # Prefix (path) to store the file (default: nil)
-                    :form_id # HTML #id selector for form element (default: 'fileupload')
+                    :prefix # Prefix (path) to store the file (default: nil)
 
       def acl
         @acl ||= 'private'
