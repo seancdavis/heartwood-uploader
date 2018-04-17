@@ -24,7 +24,7 @@ module Heartwood
                     :form_id # HTML #id selector for form element (default: 'fileupload')
 
       def acl
-        @acl ||= 'public-read'
+        @acl ||= 'private'
       end
 
       def expiration

@@ -46,7 +46,7 @@ RSpec.describe Heartwood::Uploader   do
       Heartwood::Uploader.configuration.prefix = nil
       Heartwood::Uploader.configuration.form_id = nil
 
-      expect(Heartwood::Uploader.configuration.acl).to eq('public-read')
+      expect(Heartwood::Uploader.configuration.acl).to eq('private')
       expect(Heartwood::Uploader.configuration.aws_access_key_id).to eq(nil)
       expect(Heartwood::Uploader.configuration.aws_bucket).to eq(nil)
       expect(Heartwood::Uploader.configuration.aws_secret_access_key).to eq(nil)
