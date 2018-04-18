@@ -5,6 +5,17 @@ window.Heartwood = window['Heartwood'] || {};
 
 Heartwood.Uploader = class Uploader {
 
+  static bumpIndex() {
+    if (!this.idx) { this.idx = 0 }
+    this.idx += 1;
+    return this.currentIndex();
+  }
+
+  static currentIndex() {
+    if (!this.idx) { this.idx = 0 }
+    return this.idx;
+  }
+
   constructor(el) {
     this.el = el;
     this.init();
@@ -12,15 +23,16 @@ Heartwood.Uploader = class Uploader {
 
   init() {
     $(this.el).fileupload({
-      add: this.add,
-      progress: this.progress,
-      done: this.done,
-      fail: this.fail
+      add: (event, data) => { this.add(event, data) },
+      progress: (event, data) => { this.progress(event, data) },
+      done: (event, data) => { this.done(event, data) },
+      fail: (event, data) => { this.fail(event, data) }
     })
   }
 
   add(event, data) {
-    data.context = $(tmpl('heartwood-upload-template', data.files[0]));
+    data.idx = Heartwood.Uploader.bumpIndex();
+    data.context = $(tmpl('heartwood-uploader-template', data.files[0]));
     $('#heartwood-uploader-container').append(data.context);
     data.form.find('#Content-Type').val(data.files[0].type);
     data.submit();
@@ -35,9 +47,10 @@ Heartwood.Uploader = class Uploader {
   }
 
   done(event, data) {
+    const path = $(this.el).find('#key').val().replace('${filename}', data.files[0].name);
+    data.context.find('.heartwood-uploader-file').val(data.url + path);
     data.context.find('.success').text('File uploaded successfully.');
     data.context.find('.progress').remove();
-    // TODO: This is where configuration needs to happen on what to do next ...
   }
 
   fail(event, data) {
