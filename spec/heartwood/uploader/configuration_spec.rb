@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Heartwood::Uploader   do
+RSpec.describe Heartwood::Uploader do
 
   let(:aws_access_key_id) { Faker::Lorem.sentence }
   let(:aws_bucket) { Faker::Lorem.sentence }
