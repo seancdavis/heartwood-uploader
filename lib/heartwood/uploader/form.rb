@@ -10,11 +10,29 @@ module Heartwood
       end
 
       def fields
-        {}
+        {
+          key: key,
+          acl: acl,
+          policy: policy_data_json,
+          signature: encoded_signature,
+          'Content-Type' => nil,
+          'AWSAccessKeyId' => aws_access_key_id
+        }
       end
 
       def form_options
-        {}
+        {
+          id: form_id,
+          method: form_method,
+          authenticity_token: false,
+          multipart: allow_multiple_files,
+          data: {
+          #   post: @options[:post],
+          #   target: @options[:target],
+          #   submit_async: @options[:submit_async]
+            uploader: true
+          }
+        }
       end
 
       def method_missing(method_name, *args, &block)
@@ -29,15 +47,45 @@ module Heartwood
       private
 
       def init_options!
-        @options.merge!(
-          url: "https://#{bucket}.s3.amazonaws.com/"
-        )
+        @options.merge!(url: "https://#{bucket}.s3.amazonaws.com/")
       end
 
       def default_options
         {
-          bucket: Heartwood::Uploader.configuration.aws_bucket
+          acl: 'private',
+          allow_multiple_files: false,
+          aws_access_key_id: Heartwood::Uploader.configuration.aws_access_key_id,
+          aws_secret_access_key: Heartwood::Uploader.configuration.aws_secret_access_key,
+          bucket: Heartwood::Uploader.configuration.aws_bucket,
+          expiration: 10.hours.from_now,
+          form_id: 'heartwood-uploader',
+          form_method: 'post',
+          key: '${filename}',
+          max_file_size: 50.megabytes,
         }
+      end
+
+      def policy_data_json
+        Base64.encode64({
+          expiration: expiration,
+          conditions: [
+            ['starts-with', '$utf8', ''],
+            ['starts-with', '$key', ''],
+            ['starts-with', '$Content-Type', ''],
+            ['content-length-range', 0, max_file_size],
+            { bucket: bucket },
+            { acl: acl }
+          ]
+        }.to_json).delete("\n")
+      end
+
+      def encoded_signature
+        Base64.encode64(
+          OpenSSL::HMAC.digest(
+            OpenSSL::Digest.new('sha1'),
+            aws_secret_access_key,
+            policy_data_json)
+        ).delete("\n")
       end
 
     end

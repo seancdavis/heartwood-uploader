@@ -1,6 +1,8 @@
 require 'rails'
 require 'active_support/core_ext/numeric/bytes'
 
+require 'jquery-fileupload-rails'
+
 require 'heartwood/uploader/version'
 require 'heartwood/uploader/engine'
 require 'heartwood/uploader/railtie'
