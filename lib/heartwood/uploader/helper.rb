@@ -19,12 +19,12 @@ module Heartwood
         content_tag(:div, nil, id: form.template_container_id)
       end
 
-      def _hwupl_tmpl_script(_form)
+      def _hwupl_tmpl_script(form)
         %{
           <script id="heartwood-uploader-template" type="text/x-tmpl">
             <div class="heartwood-uploader-template">
               {%= o.name %}
-              <input type="hidden" class="heartwood-uploader-file" id="hw-{%= Heartwood.Uploader.currentIndex() %}" name"">
+              <input type="hidden" class="#{form.field_class}" id="hw-{%= Heartwood.Uploader.currentIndex() %}" name"">
               <div class="progress">
                 <div class="progress-bar">
                   <span class="progress-value"></span>

@@ -23,7 +23,97 @@ Or install it yourself as:
 Usage
 ----------
 
-Documentation forthcoming ...
+Heartwood's Uploader uses a combination of a helper method and some JavaScript to build a form that will upload on the fly, with a progress bar. There are three main components to be familiar with:
+
+1. Configuration
+2. Helper Method (i.e. the upload form)
+3. JavaScript Events
+
+Let's take a look at each of these.
+
+### 01: AWS S3 Configuration
+
+Only S3 is supported at the moment, and your credentials can be configured prior to instantiating the helper method. Place the following in `config/initializers/heartwood.rb` (or any other config initializer):
+
+```ruby
+Heartwood::Uploader.configure do |config|
+  config.aws_access_key_id = 'your_aws_access_key'
+  config.aws_bucket = 'aws_bucket'
+  config.aws_secret_access_key = 'aws_secret_access_key'
+end
+```
+
+Change the values here to match your credentials. And remember to **never commit secret keys to git.** I prefer the [dotenv gem](https://github.com/bkeepers/dotenv) for storing sensitive values (which can be used in combination with Rails' secrets).
+
+#### S3 Bucket Configuration
+
+For the uploader to work properly, we need proper access via CORS configuration on your bucket. **You should lock this down to the applicable domain(s)**. In development, that may look like this:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+<CORSRule>
+    <AllowedOrigin>http://locahost:3000</AllowedOrigin>
+    <AllowedMethod>POST</AllowedMethod>
+    <AllowedHeader>*</AllowedHeader>
+</CORSRule>
+</CORSConfiguration>
+```
+
+Change the `AllowedOrigin` to the appropriate domain. (Hint: I tend to use separate buckets for development and production so I can more tightly control the CORS configuration. It also makes asset management cleaner.)
+
+### 02: Helper Method
+
+First, make sure you are are loading the JavaScript file. This is using ES6, so for the time being add the following to your `Gemfile`:
+
+```ruby
+gem 'babel-transpiler'
+gem 'sprockets', '4.0.0.beta7'
+```
+
+Then you can load the script in `app/assets/javascripts/application.js`:
+
+```js
+//= require jquery
+//= require heartwood/uploader
+```
+
+Note that this gem requires jQuery because it relies on [jQuery File Upload](https://github.com/blueimp/jQuery-File-Upload). You can use the [`jquery-rails`](https://github.com/rails/jquery-rails) gem for easy loading.
+
+Then, if your AWS credentials are set, all you need to do is add the helper method and it will _just work:_
+
+```erb
+<%= heartwood_uploader %>
+```
+
+This will render a file upload button and after you select a file, it will show a progress bar and success or failure of the upload.
+
+If successful, the URL of the uploaded file will be placed in a hidden field within the upload template. Its class is `.heartwood-uploader-file` and its ID is random.
+
+(Note: The markup is built to work with Bootstrap 4.)
+
+**GOTCHA! This does not currently play well with Turbolinks.**
+
+#### Options
+
+You can pass in a hash of options to the helper method to customize your uploader. (Every "required" option has a default value, so there are no required arguments in essence. However, AWS credentials must be set, as shown above.)
+
+| Option | Default | Description |
+| ------ | ------- | ----------- |
+| `acl` | `'private'` | Canned S3 Access Control List. [See more here.](https://docs.aws.amazon.com/AmazonS3/latest/dev/acl-overview.html#canned-acl) |
+| `allow_multiple_files` | `false` | Allow multiple files to be uploaded at once. In this case a template (including input field) will be rendered for each. |
+| `aws_access_key_id` | `Heartwood::Uploader.configuration.aws_access_key_id` | Override default (or set) AWS access key ID. |
+| `aws_secret_access_key` | `Heartwood::Uploader.configuration.aws_secret_access_key` | Override default (or set) AWS secret access key. |
+| `bucket` | `Heartwood::Uploader.configuration.aws_bucket` | Override default (or set) AWS S3 bucket. |
+| `expiration` | `10.hours.from_now` | When to clean up unfinished multipart upload (only applies if `allow_multiple_files` is `true`). |
+| `field_class` | `'heartwood-uploader-file'` | Class for the input field in the template (the ID is auto-incremented). |
+| `form_id` | `'heartwood-uploader'` | ID for the upload form. It is recommended you manually set this when you have more than one uploader on a page. |
+| `form_method` | `'post'` | The request method. There is typically no need to change this. |
+| `key` | `'${filename}'` | Path to the uploaded file in the S3 bucket. Note that you must include `${filename}` or all your files will have the same name. |
+| `max_file_size` | `50.megabytes` | Maximium allowed upload size. |
+| `template_container_id` | `"hwupl-#{SecureRandom.hex(6)}"` | ID for the container in which to drop the upload template. This is handy if you want the field to be part of another form. |
+| `trigger_id` | `nil` | ID for a custom button or link that will trigger the browser's file chooser. If set, this will also hide the default file chooser. |
+
 
 Development
 ----------

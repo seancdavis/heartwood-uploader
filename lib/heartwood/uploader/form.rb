@@ -63,7 +63,7 @@ module Heartwood
           aws_secret_access_key: Heartwood::Uploader.configuration.aws_secret_access_key,
           bucket: Heartwood::Uploader.configuration.aws_bucket,
           expiration: 10.hours.from_now,
-          field_id: 'heartwood-uploader-file',
+          field_class: 'heartwood-uploader-file',
           form_id: 'heartwood-uploader',
           form_method: 'post',
           key: '${filename}',
