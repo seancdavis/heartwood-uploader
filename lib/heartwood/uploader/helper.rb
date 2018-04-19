@@ -4,7 +4,7 @@ module Heartwood
 
       def heartwood_uploader(options = {})
         form = Form.new(options)
-        content_tag(:div, id: 'heartwood-uploader-container') do
+        content_tag(:div, id: form.container_id) do
           heartwood_uploader_form(form) + heartwood_upload_template
         end
       end

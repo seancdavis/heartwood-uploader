@@ -18,6 +18,7 @@ Heartwood.Uploader = class Uploader {
 
   constructor(el) {
     this.el = el;
+    this.containerId = $(this.el).data('template-container');
     this.init();
   }
 
@@ -33,7 +34,7 @@ Heartwood.Uploader = class Uploader {
   add(event, data) {
     data.idx = Heartwood.Uploader.bumpIndex();
     data.context = $(tmpl('heartwood-uploader-template', data.files[0]));
-    $('#heartwood-uploader-container').append(data.context);
+    $(`#${this.containerId}`).append(data.context);
     data.form.find('#Content-Type').val(data.files[0].type);
     data.submit();
     $(this.el).trigger('heartwood.uploader.begin', data);

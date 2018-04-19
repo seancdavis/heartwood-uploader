@@ -31,6 +31,7 @@ module Heartwood
           #   post: @options[:post],
           #   target: @options[:target],
           #   submit_async: @options[:submit_async]
+            template_container: container_id,
             uploader: true
           }
         }
@@ -63,6 +64,7 @@ module Heartwood
           aws_access_key_id: Heartwood::Uploader.configuration.aws_access_key_id,
           aws_secret_access_key: Heartwood::Uploader.configuration.aws_secret_access_key,
           bucket: Heartwood::Uploader.configuration.aws_bucket,
+          container_id: "hw-#{SecureRandom.hex(6)}",
           expiration: 10.hours.from_now,
           field_id: 'heartwood-uploader-file',
           form_id: 'heartwood-uploader',

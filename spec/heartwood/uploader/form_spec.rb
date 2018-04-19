@@ -72,6 +72,7 @@ RSpec.describe Heartwood::Uploader::Form do
       expect(form.aws_access_key_id).to eq('aws_access_key_id')
       expect(form.aws_secret_access_key).to eq('aws_secret_access_key')
       expect(form.bucket).to eq('aws_bucket')
+      expect(form.container_id.start_with?('hw-')).to eq(true)
       expect(form.expiration < 10.hours.from_now).to eq(true)
       expect(form.field_id).to eq('heartwood-uploader-file')
       expect(form.form_id).to eq('heartwood-uploader')
@@ -86,6 +87,7 @@ RSpec.describe Heartwood::Uploader::Form do
         aws_access_key_id: '[custom]_aws_access_key_id',
         aws_secret_access_key: '[custom]_aws_secret_access_key',
         bucket: '[custom]_bucket',
+        container_id: '[custom]_container_id',
         expiration: '[custom]_expiration',
         field_id: '[custom]_field_id',
         form_id: '[custom]_form_id',
@@ -98,6 +100,7 @@ RSpec.describe Heartwood::Uploader::Form do
       expect(form.aws_access_key_id).to eq('[custom]_aws_access_key_id')
       expect(form.aws_secret_access_key).to eq('[custom]_aws_secret_access_key')
       expect(form.bucket).to eq('[custom]_bucket')
+      expect(form.container_id).to eq('[custom]_container_id')
       expect(form.expiration).to eq('[custom]_expiration')
       expect(form.field_id).to eq('[custom]_field_id')
       expect(form.form_id).to eq('[custom]_form_id')

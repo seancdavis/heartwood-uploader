@@ -1,10 +1,26 @@
 <main class="container my-5">
 
-  <!-- Basic Example -->
-  <div>
+  <!-- 01: Basic Example -->
+  <div id="example-01" class="mb-5">
     <h2>Basic Example</h2>
     <p>This is the functionality out of the box, when including Bootstrap 4.x:</p>
     <%= heartwood_uploader %>
+  </div>
+
+  <!-- 02: JavaScript Events -->
+  <div id="example-02" class="mb-5">
+    <h2>JavaScript Events</h2>
+    <p></p>
+    <p><strong>Current Event: </strong><span id="e02-evt"></span></p>
+    <%= heartwood_uploader form_id: 'hw-ex-02' %>
+    <script>
+      $(document).ready(function() {
+        $('#hw-ex-02').on('heartwood.uploader.begin', (event, data) => $('#e02-evt').text('begin'));
+        $('#hw-ex-02').on('heartwood.uploader.progress', (event, data) => $('#e02-evt').text('progress'));
+        $('#hw-ex-02').on('heartwood.uploader.success', (event, data) => $('#e02-evt').text('success'));
+        $('#hw-ex-02').on('heartwood.uploader.fail', (event, data) => $('#e02-evt').text('fail'));
+      });
+    </script>
   </div>
 
 </main>
