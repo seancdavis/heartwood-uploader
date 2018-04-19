@@ -28,10 +28,8 @@ module Heartwood
           authenticity_token: false,
           multipart: allow_multiple_files,
           data: {
-          #   post: @options[:post],
-          #   target: @options[:target],
-          #   submit_async: @options[:submit_async]
             template_container: template_container_id,
+            trigger: trigger_id,
             uploader: true
           }
         }
@@ -71,6 +69,7 @@ module Heartwood
           key: '${filename}',
           max_file_size: 50.megabytes,
           template_container_id: "hwupl-#{SecureRandom.hex(6)}",
+          trigger_id: nil
         }
       end
 

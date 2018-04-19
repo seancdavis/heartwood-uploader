@@ -79,6 +79,7 @@ RSpec.describe Heartwood::Uploader::Form do
       expect(form.key).to eq('${filename}')
       expect(form.max_file_size).to eq(50.megabytes)
       expect(form.template_container_id.start_with?('hwupl-')).to eq(true)
+      expect(form.trigger_id).to eq(nil)
     end
     it 'will override options on init' do
       form = Heartwood::Uploader::Form.new(
@@ -94,6 +95,7 @@ RSpec.describe Heartwood::Uploader::Form do
         key: '[custom]_key',
         max_file_size: '[custom]_max_file_size',
         template_container_id: '[custom]_template_container_id',
+        trigger_id: '[custom]_trigger_id',
       )
       expect(form.acl).to eq('[custom]_acl')
       expect(form.allow_multiple_files).to eq('[custom]_allow_multiple_files')
@@ -107,6 +109,7 @@ RSpec.describe Heartwood::Uploader::Form do
       expect(form.key).to eq('[custom]_key')
       expect(form.max_file_size).to eq('[custom]_max_file_size')
       expect(form.template_container_id).to eq('[custom]_template_container_id')
+      expect(form.trigger_id).to eq('[custom]_trigger_id')
     end
   end
 

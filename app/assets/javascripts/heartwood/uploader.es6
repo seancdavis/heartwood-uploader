@@ -28,7 +28,8 @@ Heartwood.Uploader = class Uploader {
       progress: (event, data) => { this.progress(event, data) },
       done: (event, data) => { this.done(event, data) },
       fail: (event, data) => { this.fail(event, data) }
-    })
+    });
+    this.bindTrigger();
   }
 
   add(event, data) {
@@ -61,6 +62,13 @@ Heartwood.Uploader = class Uploader {
     data.context.find('.error').text('There was an error with this upload.');
     data.context.find('.progress').remove();
     $(this.el).trigger('heartwood.uploader.error', data);
+  }
+
+  bindTrigger() {
+    if (!$(this.el).data('trigger')) { return false }
+    const input = $(this.el).find('input[type=file]').first();
+    input.hide();
+    $(`#${$(this.el).data('trigger')}`).click(event => input.trigger('click'));
   }
 
 }
