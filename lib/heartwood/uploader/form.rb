@@ -6,6 +6,7 @@ module Heartwood
 
       def initialize(options = {})
         @options = options.deep_symbolize_keys.reverse_merge(default_options)
+        validate_options!
         init_options!
       end
 
@@ -45,6 +46,11 @@ module Heartwood
       end
 
       private
+
+      def validate_options!
+        return true if aws_access_key_id && aws_secret_access_key && bucket
+        raise ArgumentError.new('Missing required AWS configuration.')
+      end
 
       def init_options!
         @options.merge!(url: "https://#{bucket}.s3.amazonaws.com/")

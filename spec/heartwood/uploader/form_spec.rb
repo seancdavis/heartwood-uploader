@@ -43,6 +43,22 @@ RSpec.describe Heartwood::Uploader::Form do
     end
   end
 
+  describe '#validate_options!' do
+    it 'throws an error if aws keys are nil' do
+      Heartwood::Uploader.configuration.aws_access_key_id = nil
+      expect { Heartwood::Uploader::Form.new }.to raise_error(ArgumentError)
+
+      Heartwood::Uploader.configuration.aws_access_key_id = 'aws_access_key_id'
+      Heartwood::Uploader.configuration.aws_bucket = nil
+      expect { Heartwood::Uploader::Form.new }.to raise_error(ArgumentError)
+
+      Heartwood::Uploader.configuration.aws_access_key_id = 'aws_access_key_id'
+      Heartwood::Uploader.configuration.aws_bucket = 'aws_bucket'
+      Heartwood::Uploader.configuration.aws_secret_access_key = nil
+      expect { Heartwood::Uploader::Form.new }.to raise_error(ArgumentError)
+    end
+  end
+
   describe '#init_options!' do
     it 'sets the url after the options have been set' do
       expect(form.url).to eq('https://aws_bucket.s3.amazonaws.com/')
