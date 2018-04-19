@@ -22,7 +22,7 @@ module Heartwood
           <script id="heartwood-uploader-template" type="text/x-tmpl">
             <div class="heartwood-uploader-template">
               {%= o.name %}
-              <input type="text" class="heartwood-uploader-file" id="hw-{%= Heartwood.Uploader.currentIndex() %}" name"">
+              <input type="hidden" class="heartwood-uploader-file" id="hw-{%= Heartwood.Uploader.currentIndex() %}" name"">
               <div class="progress">
                 <div class="progress-bar">
                   <span class="progress-value"></span>
