@@ -107,11 +107,12 @@ You can pass in a hash of options to the helper method to customize your uploade
 | `bucket` | `Heartwood::Uploader.configuration.aws_bucket` | Override default (or set) AWS S3 bucket. |
 | `expiration` | `10.hours.from_now` | When to clean up unfinished multipart upload (only applies if `allow_multiple_files` is `true`). |
 | `field_class` | `'heartwood-uploader-file'` | Class for the input field in the template (the ID is auto-incremented). |
+| `field_name` | `nil` | Name for the input field after successful upload. Usually, this is used in conjunction with `template_container_id` to place the field in a custom form. |
 | `form_id` | `'heartwood-uploader'` | ID for the upload form. It is recommended you manually set this when you have more than one uploader on a page. |
 | `form_method` | `'post'` | The request method. There is typically no need to change this. |
 | `key` | `'${filename}'` | Path to the uploaded file in the S3 bucket. Note that you must include `${filename}` or all your files will have the same name. |
 | `max_file_size` | `50.megabytes` | Maximium allowed upload size. |
-| `template_container_id` | `"hwupl-#{SecureRandom.hex(6)}"` | ID for the container in which to drop the upload template. This is handy if you want the field to be part of another form. |
+| `template_container_id` | `"hwupl-#{SecureRandom.hex(6)}"` | ID for the container in which to drop the upload template. This is handy if you want the field to be part of a form. |
 | `trigger_id` | `nil` | ID for a custom button or link that will trigger the browser's file chooser. If set, this will also hide the default file chooser. |
 
 

@@ -64,6 +64,7 @@ module Heartwood
           bucket: Heartwood::Uploader.configuration.aws_bucket,
           expiration: 10.hours.from_now,
           field_class: 'heartwood-uploader-file',
+          field_name: nil,
           form_id: 'heartwood-uploader',
           form_method: 'post',
           key: '${filename}',
