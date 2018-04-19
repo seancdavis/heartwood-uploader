@@ -11,3 +11,7 @@
 .rspec_status
 
 *.gem
+
+/spec/dummy/tmp/
+/spec/dummy/db/*.sqlite3
+/spec/dummy/.env
