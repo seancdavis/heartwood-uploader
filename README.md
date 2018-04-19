@@ -115,6 +115,31 @@ You can pass in a hash of options to the helper method to customize your uploade
 | `template_container_id` | `"hwupl-#{SecureRandom.hex(6)}"` | ID for the container in which to drop the upload template. This is handy if you want the field to be part of a form. |
 | `trigger_id` | `nil` | ID for a custom button or link that will trigger the browser's file chooser. If set, this will also hide the default file chooser. |
 
+### 03: JavaScript Events
+
+There are four custom events fired on the jQuery object representing the form. Each event sends the Event object as the first argument and the upload data object for the second.
+
+| Event | Description |
+| ------ | ----------- |
+| `heartwood.uploader.begin` | Begin an upload |
+| `heartwood.uploader.progress` | Progress is made on the upload |
+| `heartwood.uploader.success` | Upload was successful |
+| `heartwood.uploader.fail` | Upload was not successful |
+
+Here's an example:
+
+```html
+<%= heartwood_uploader form_id: 'my-uploader' %>
+
+<script>
+$(document).ready(function() {
+  $('#my-uploader').on('heartwood.uploader.begin', (event, data) => console.log('begin'));
+  $('#my-uploader').on('heartwood.uploader.progress', (event, data) => console.log('progress'));
+  $('#my-uploader').on('heartwood.uploader.success', (event, data) => console.log('success'));
+  $('#my-uploader').on('heartwood.uploader.fail', (event, data) => console.log('fail'));
+});
+</script>
+```
 
 Development
 ----------
