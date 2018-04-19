@@ -28,6 +28,7 @@ module Heartwood
           authenticity_token: false,
           multipart: allow_multiple_files,
           data: {
+            template_id: template_id,
             template_container: template_container_id,
             trigger: trigger_id,
             uploader: true
@@ -63,14 +64,16 @@ module Heartwood
           aws_secret_access_key: Heartwood::Uploader.configuration.aws_secret_access_key,
           bucket: Heartwood::Uploader.configuration.aws_bucket,
           expiration: 10.hours.from_now,
-          field_class: 'heartwood-uploader-file',
-          field_name: nil,
           form_id: 'heartwood-uploader',
           form_method: 'post',
           key: '${filename}',
           max_file_size: 50.megabytes,
           template_container_id: "hwupl-#{SecureRandom.hex(6)}",
-          trigger_id: nil
+          template_id: "hwtmpl-#{SecureRandom.hex(6)}",
+          trigger_id: nil,
+          upload_field_id: 'heartwood-uploader-file',
+          url_field_class: 'heartwood-uploader-url',
+          url_field_name: nil,
         }
       end
 

@@ -73,14 +73,16 @@ RSpec.describe Heartwood::Uploader::Form do
       expect(form.aws_secret_access_key).to eq('aws_secret_access_key')
       expect(form.bucket).to eq('aws_bucket')
       expect(form.expiration < 10.hours.from_now).to eq(true)
-      expect(form.field_class).to eq('heartwood-uploader-file')
-      expect(form.field_name).to eq(nil)
       expect(form.form_id).to eq('heartwood-uploader')
       expect(form.form_method).to eq('post')
       expect(form.key).to eq('${filename}')
       expect(form.max_file_size).to eq(50.megabytes)
+      expect(form.template_id.start_with?('hwtmpl-')).to eq(true)
       expect(form.template_container_id.start_with?('hwupl-')).to eq(true)
       expect(form.trigger_id).to eq(nil)
+      expect(form.upload_field_id).to eq('heartwood-uploader-file')
+      expect(form.url_field_class).to eq('heartwood-uploader-url')
+      expect(form.url_field_name).to eq(nil)
     end
     it 'will override options on init' do
       form = Heartwood::Uploader::Form.new(
@@ -90,14 +92,16 @@ RSpec.describe Heartwood::Uploader::Form do
         aws_secret_access_key: '[custom]_aws_secret_access_key',
         bucket: '[custom]_bucket',
         expiration: '[custom]_expiration',
-        field_class: '[custom]_field_class',
-        field_name: '[custom]_field_name',
         form_id: '[custom]_form_id',
         form_method: '[custom]_form_method',
         key: '[custom]_key',
         max_file_size: '[custom]_max_file_size',
+        template_id: '[custom]_template_id',
         template_container_id: '[custom]_template_container_id',
         trigger_id: '[custom]_trigger_id',
+        upload_field_id: '[custom]_upload_field_id',
+        url_field_class: '[custom]_url_field_class',
+        url_field_name: '[custom]_url_field_name',
       )
       expect(form.acl).to eq('[custom]_acl')
       expect(form.allow_multiple_files).to eq('[custom]_allow_multiple_files')
@@ -105,14 +109,16 @@ RSpec.describe Heartwood::Uploader::Form do
       expect(form.aws_secret_access_key).to eq('[custom]_aws_secret_access_key')
       expect(form.bucket).to eq('[custom]_bucket')
       expect(form.expiration).to eq('[custom]_expiration')
-      expect(form.field_class).to eq('[custom]_field_class')
-      expect(form.field_name).to eq('[custom]_field_name')
       expect(form.form_id).to eq('[custom]_form_id')
       expect(form.form_method).to eq('[custom]_form_method')
       expect(form.key).to eq('[custom]_key')
       expect(form.max_file_size).to eq('[custom]_max_file_size')
+      expect(form.template_id).to eq('[custom]_template_id')
       expect(form.template_container_id).to eq('[custom]_template_container_id')
       expect(form.trigger_id).to eq('[custom]_trigger_id')
+      expect(form.upload_field_id).to eq('[custom]_upload_field_id')
+      expect(form.url_field_class).to eq('[custom]_url_field_class')
+      expect(form.url_field_name).to eq('[custom]_url_field_name')
     end
   end
 
