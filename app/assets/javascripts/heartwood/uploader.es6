@@ -36,6 +36,7 @@ Heartwood.Uploader = class Uploader {
     $('#heartwood-uploader-container').append(data.context);
     data.form.find('#Content-Type').val(data.files[0].type);
     data.submit();
+    $(this.el).trigger('heartwood.uploader.begin', data);
   }
 
   progress(event, data) {
@@ -43,6 +44,7 @@ Heartwood.Uploader = class Uploader {
       let progress = parseInt(data.loaded / data.total * 100, 10)
       data.context.find('.progress-bar').css('width', `${progress}%`)
       data.context.find('.progress-value').html(`${progress}%`)
+      $(this.el).trigger('heartwood.uploader.progress', data);
     }
   }
 
@@ -51,11 +53,13 @@ Heartwood.Uploader = class Uploader {
     data.context.find('.heartwood-uploader-file').val(data.url + path);
     data.context.find('.success').text('File uploaded successfully.');
     data.context.find('.progress').remove();
+    $(this.el).trigger('heartwood.uploader.success', data);
   }
 
   fail(event, data) {
     data.context.find('.error').text('There was an error with this upload.');
     data.context.find('.progress').remove();
+    $(this.el).trigger('heartwood.uploader.error', data);
   }
 
 }
