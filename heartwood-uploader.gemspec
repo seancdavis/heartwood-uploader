@@ -36,6 +36,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
 
+  spec.add_dependency 'aws-sdk-s3', '~> 1.9'
   spec.add_dependency 'jquery-fileupload-rails', '~> 0.4'
   spec.add_dependency 'rails', '~> 5.1'
 end

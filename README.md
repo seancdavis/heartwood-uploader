@@ -23,11 +23,12 @@ Or install it yourself as:
 Usage
 ----------
 
-Heartwood's Uploader uses a combination of a helper method and some JavaScript to build a form that will upload on the fly, with a progress bar. There are three main components to be familiar with:
+Heartwood's Uploader uses a combination of a helper method and some JavaScript to build a form that will upload on the fly, with a progress bar. There are four main components to be familiar with:
 
 1. Configuration
 2. Helper Method (i.e. the upload form)
 3. JavaScript Events
+4. Model Concern
 
 Let's take a look at each of these.
 
@@ -141,6 +142,60 @@ $(document).ready(function() {
   $('#my-uploader').on('heartwood.uploader.fail', (event, data) => console.log('fail'));
 });
 </script>
+```
+
+### 04: Model Concern
+
+The model concern can really come in handy for working with Rails models. To use the concern, include it in your model:
+
+```ruby
+class User < ActiveRecord::Base
+  include Heartwood::Uploader::Uploadable
+end
+```
+
+And then you can use the `uploadable` method to set the uploadable config for your class. **Note: Uploadable assumes you have an attribute ending in `_url` to represent the uploadable attribute.** For example, if you set `uploadable :image`, then you should have an `image_url` attribute on your model (and it should be a string).
+
+```ruby
+class User < ActiveRecord::Base
+  include Heartwood::Uploader::Uploadable
+
+  uploadable :avatar # assumes there is an "avatar_url" column
+end
+```
+
+At that point there are several methods you can take advantage of through the uploadable object.
+
+```ruby
+user = User.new
+# => #<User: ...>
+
+user.avatar_url = 'https://some.url/somepath/tomyfile.png'
+# => 'https://some.url/somepath/tomyfile.png'
+
+user.avatar
+# => #<Heartwood::Uploader::Uploadable::S3File: ...>
+
+user.avatar.url
+# => 'https://some.url/somepath/tomyfile.png'
+
+user.avatar.key
+# => '/somepath/tomyfile.png'
+
+user.avatar.key(false) # argument is whether or not to include leading slash
+# => 'somepath/tomyfile.png'
+
+user.avatar.filename
+# => 'tomyfile.png'
+
+user.avatar.presigned_url # Necessary if using "private" as the ACL
+# => really long url ...
+
+user.avatar.reset!
+# => Reset the "avatar_url" to nil (does not save to database)
+
+user.avatar.destroy!
+# => Deletes the file from S3 and then runs `reset!`
 ```
 
 Development
