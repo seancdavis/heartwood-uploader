@@ -24,7 +24,7 @@ module Heartwood
           <script id="#{form.template_id}" type="text/x-tmpl">
             <div class="heartwood-uploader-template">
               {%= o.name %}
-              <input type="text" class="#{form.url_field_class}" id="hw-{%= Heartwood.Uploader.currentIndex() %}" name="#{form.url_field_name}" data-url-field>
+              <input type="hidden" class="#{form.url_field_class}" id="hw-{%= Heartwood.Uploader.currentIndex() %}" name="#{form.url_field_name}" data-url-field>
               <div class="progress">
                 <div class="progress-bar">
                   <span class="progress-value"></span>
