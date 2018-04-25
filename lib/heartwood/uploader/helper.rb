@@ -23,15 +23,15 @@ module Heartwood
         %{
           <script id="#{form.template_id}" type="text/x-tmpl">
             <div class="heartwood-uploader-template">
-              {%= o.name %}
+              <span class="hwupl-filename">{%= o.name %}</span>
               <input type="hidden" class="#{form.url_field_class}" id="hw-{%= Heartwood.Uploader.currentIndex() %}" name="#{form.url_field_name}" data-url-field>
               <div class="progress">
                 <div class="progress-bar">
                   <span class="progress-value"></span>
                 </div>
               </div>
-              <p class="error text-danger"></p>
-              <p class="success text-success"></p>
+              <p class="hwupl-error text-danger"></p>
+              <p class="hwupl-success text-success"></p>
             </div>
           </script>
         }.html_safe
