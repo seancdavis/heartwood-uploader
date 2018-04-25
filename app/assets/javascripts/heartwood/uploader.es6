@@ -54,15 +54,15 @@ Heartwood.Uploader = class Uploader {
   done(event, data) {
     const path = $(this.el).find('#key').val().replace('${filename}', data.files[0].name);
     data.context.find('input[data-url-field]').val(data.url + path);
-    data.context.find('.success').text('File uploaded successfully.');
+    data.context.find('.hwupl-success').text('File uploaded successfully.');
     data.context.find('.progress').remove();
-    $(this.el).trigger('heartwood.uploader.success', data);
+    $(this.el).trigger('heartwood.uploader.hwupl-success', data);
   }
 
   fail(event, data) {
-    data.context.find('.error').text('There was an error with this upload.');
+    data.context.find('.hwupl-error').text('There was an error with this upload.');
     data.context.find('.progress').remove();
-    $(this.el).trigger('heartwood.uploader.error', data);
+    $(this.el).trigger('heartwood.uploader.hwupl-error', data);
   }
 
   bindTrigger() {
