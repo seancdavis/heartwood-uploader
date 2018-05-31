@@ -3,7 +3,10 @@ module Heartwood
     class Railtie < Rails::Railtie
 
       initializer 'heartwood-uploader.view_helpers' do
-        ActiveSupport.on_load(:action_view) { include Heartwood::Uploader::Helper }
+        ActiveSupport.on_load(:action_view) do
+          require_relative 'helper'
+          include Heartwood::Uploader::Helper
+        end
       end
 
     end
